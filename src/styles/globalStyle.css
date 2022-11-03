@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* keyboard css */
+.key_rows {
+  @apply flex w-full my-0 mx-auto;
+}
+
+/* 나중에 없애보기 */
+.key {
+  /* width: 20px; */
+  font-weight: bold;
+  margin: 2px 4px;
+  height: 58px;
+  cursor: pointer;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  border-radius: 4px;
+  background-color: #eee;
+  padding: 0;
+}
