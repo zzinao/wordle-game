@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/styled.css";
 
 const GameBoardBlock = () => {
   // return <div className="block bg-slate-500">b</div>;
