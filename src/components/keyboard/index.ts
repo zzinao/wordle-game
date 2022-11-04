@@ -1,3 +1,3 @@
-import { Keyboard } from "./KeyBoard";
+import { Keyboard } from './Keyboard';
 
 export default Keyboard;
