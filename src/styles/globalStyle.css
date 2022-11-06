@@ -4,7 +4,7 @@
 
 /* keyboard css */
 .key_rows {
-  @apply flex w-full my-0 mx-auto;
+  @apply flex gap-1 my-0.5 w-fit;
 }
 
 /* 나중에 없애보기 */

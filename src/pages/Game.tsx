@@ -2,34 +2,34 @@ import React, { useState, useEffect } from 'react';
 import GameBoard from '../components/gameboard';
 import KeyBoard from '../components/keyboard';
 import Header from '../components/Hedaer';
-import { getWordApi } from '../utils/api';
 
 const Game = () => {
+	const [gameEnd, setGameEnd] = useState(false);
 	const [currentGuess, setCurrentGuess] = useState('');
 	const [guessArr, setGuessArr] = useState<string[]>([]);
+	const [error, setError] = useState('');
 
-	// useEffect(() => {
-	//   getWordApi();
-	// }, []);
 
-	console.log(currentGuess);
-	console.log(guessArr);
 	const handleLetter = (key: string) => {
 		console.log(key);
 		if (currentGuess.length < 5) {
 			setCurrentGuess(currentGuess + key);
-			setGuessArr([currentGuess]);
+			setGuessArr([currentGuess + key]);
 		} else{
 			return;
 		}
 	};
+
 	const handleEnter = () => {
 		if (currentGuess.length == 5) {
-			setGuessArr((prev) => [...prev, currentGuess]);
+			setGuessArr(prevGuess => [...prevGuess, currentGuess]);
 			setCurrentGuess('');
 		} else {
 			alert('5글자를 채워주세요!');
+			setError('5글자를 채워주세요!');
 		}
+
+
 	};
 
 	const handleDelete = () => {
@@ -50,14 +50,13 @@ const Game = () => {
 
 	useEffect(() => {
 		window.addEventListener('keydown', onClickDown);
-
 		return () => window.removeEventListener('keydown', onClickDown);
 	});
 
 	return (
 		<div>
 			<Header />
-			<div className="w-500 my-0 mx-auto flex flex-col ">
+			<div className="">
 				<GameBoard guess={guessArr}/>
 				<KeyBoard 
 					handleLetter={handleLetter}

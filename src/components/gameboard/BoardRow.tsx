@@ -1,6 +1,5 @@
 import React from 'react';
-import GameBoardBlock from '../../elements/GameBoardBlock';
-import {} from '../../store';
+import GameBoardBlock from './GameBoardBlock';
 interface IProps {
   letters: string;
 }

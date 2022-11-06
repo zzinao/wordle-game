@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
-import KeyboardBlock from '../../elements/KeyboardBlock';
+import KeyboardBlock from './KeyboardBlock';
 import { keyArr, keyArr2, keyArr3 } from '../../utils/keys';
-import { useAnswerStore } from '../../store/store';
 
 interface IProps {
   handleLetter: (value: string) => void
@@ -13,12 +12,9 @@ export const Keyboard = ({
 	handleLetter,
 	handleEnter,
 	handleDelete }: IProps) => {
-	const { word, answer, pressedAlphabet, submitAnswer } = useAnswerStore();
-
-
 
 	return (
-		<div className="my-10 mx-8">
+		<div className="flex flex-col items-center w-full">
 			<div className="key_rows">
 				{keyArr.map((key) => (
 					<KeyboardBlock value={key} key={key} onClick={() => handleLetter(key)} />
