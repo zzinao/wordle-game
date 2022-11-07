@@ -1,69 +1,56 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable no-mixed-spaces-and-tabs */
+import React, { useState, useEffect, useRef } from 'react';
 import GameBoard from '../components/gameboard';
-import KeyBoard from '../components/keyboard';
+import Keyboard from '../components/keyboard';
 import Header from '../components/Hedaer';
-import { getWordApi } from '../utils/api';
+import useGuess  from '../hooks/useGuess';
+import usePrevious from '../hooks/usePrevious';
+import { useStore } from '../store/store';
+import { isValidWord } from '../utils/gameUtil';
 
 const Game = () => {
-	const [currentGuess, setCurrentGuess] = useState('');
-	const [guessArr, setGuessArr] = useState<string[]>([]);
+	const [guess, setGuess, addGuessLetter] = useGuess();
+	const [showInvalidGuess, setInvalidGuess] = useState(false);
+	const [prevState, setPrevState] = useState();
 
 	// useEffect(() => {
-	//   getWordApi();
-	// }, []);
+	//   let id: NodeJS.Timeout;
+	//   if (showInvalidGuess) {
+	// 		id = setTimeout(() => setInvalidGuess(false), 1500);
+	//   }
+	//   return () => clearTimeout(id);
+	// }, [showInvalidGuess]);
+  
+	const addGuess = useStore((state) => state.addGuess);
+	const previousGuess = usePrevious(guess);
 
-	console.log(currentGuess);
-	console.log(guessArr);
-	const handleLetter = (key: string) => {
-		console.log(key);
-		if (currentGuess.length < 5) {
-			setCurrentGuess(currentGuess + key);
-			setGuessArr([currentGuess]);
-		} else{
-			return;
-		}
-	};
-	const handleEnter = () => {
-		if (currentGuess.length == 5) {
-			setGuessArr((prev) => [...prev, currentGuess]);
-			setCurrentGuess('');
-		} else {
-			alert('5글자를 채워주세요!');
-		}
-	};
-
-	const handleDelete = () => {
-		setCurrentGuess(currentGuess.slice(0, -1));
-		setGuessArr([currentGuess]);
-	};
-
-	const onClickDown = (e: KeyboardEvent) => {
-		console.log(e.key);
-		if (e.code === 'Enter') {
-			handleEnter();
-		} else if (e.code === 'Backspace') {
-			handleDelete();
-		} else if ('abcdefghijklmnopqrstuvwxyz'.includes(e.key.toLowerCase())) {
-			handleLetter(e.key);
-		}
-	};
+	console.log(previousGuess);
 
 	useEffect(() => {
-		window.addEventListener('keydown', onClickDown);
+	  if (guess.length === 0 && previousGuess?.length === 5) {
+			if (isValidWord(previousGuess)) {
+		  setInvalidGuess(false);
+		  addGuess(previousGuess);
+			} else {
+		  setInvalidGuess(true);
+		  setGuess(previousGuess);
+			}
+	  }
+	}, [guess]);
 
-		return () => window.removeEventListener('keydown', onClickDown);
-	});
+	useEffect(() => {
+		if(guess.length === 0 && previousGuess?.length === 5) { // 다음열로 이동
+			if(isValidWord(previousGuess)){
+				addGuess
+			}
+		}
+	})
 
 	return (
 		<div>
 			<Header />
-			<div className="w-500 my-0 mx-auto flex flex-col ">
-				<GameBoard guess={guessArr}/>
-				<KeyBoard 
-					handleLetter={handleLetter}
-					handleEnter={handleEnter}
-					handleDelete={handleDelete}/>
-			</div>
+			<GameBoard />
+			<Keyboard />
 		</div>
 	);
 };
