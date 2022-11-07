@@ -1,4 +1,5 @@
-export type GuessArrType = {
-    currentGuess: string;
-    state: LetterState;
-  };
+export enum LetterState { // 알파벳 상태
+  Correct,
+  Exist,
+  Miss,
+}
