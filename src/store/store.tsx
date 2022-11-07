@@ -1,7 +1,7 @@
-import create from 'zustand';
-import { persist } from 'zustand/middleware';
-import {LetterState, getRandomWord, MatchingGuess} from '../utils/gameLogic';
-
+/* eslint-disable no-fallthrough */
+import create, { StateCreator } from 'zustand';
+import { persist, PersistOptions } from 'zustand/middleware';
+import { LetterState, getRandomWord, MatchingGuess } from '../utils/gameUtil';
 interface GuessRow {
   guess: string;
   result?: LetterState[];
@@ -10,37 +10,41 @@ interface GuessRow {
 interface StoreState {
   answer: string;
   rows: GuessRow[];
-  gameState: 'playing' | 'win' | 'lost';
+  gameState: 'playing' | 'won' | 'lost';
   keyboardLetterState: { [letter: string]: LetterState };
   addGuess(guess: string): void;
   newGame(initialGuess?: string[]): void;
 }
 
+type MyPersist = (config: StateCreator<StoreState>, options: PersistOptions<StoreState>) => StateCreator<StoreState>;
+
 export const useStore = create<StoreState>(
-	persist(
-		( set, get) => {
-			const addGuess = (guess:string) => {
+	(persist as MyPersist)(
+		(set, get) => {
+			const addGuess = (guess: string) => {
 				const result = MatchingGuess(guess, get().answer);
+
 				const rows = get().rows.concat({
 					guess,
 					result,
 				});
 
-				const didWin = result.every((result) => result === LetterState.Correct);
+				const didWin = result.every((r) => r === LetterState.Correct);
+
 				const keyboardLetterState = get().keyboardLetterState;
-				result.forEach((result, i) => {
-					const resultGuessLetter = guess(i);
+				result.forEach((r, index) => {
+					const resultGuessLetter = guess[index];
+
 					const currentLetterState = keyboardLetterState[resultGuessLetter];
 					switch (currentLetterState) {
 					case LetterState.Correct:
 						break;
 					case LetterState.Exist:
-						if( result === LetterState.Miss) {
+						if (r === LetterState.Miss) {
 							break;
 						}
-					// eslint-disable-next-line no-fallthrough
 					default:
-						keyboardLetterState[resultGuessLetter] = result;
+						keyboardLetterState[resultGuessLetter] = r;
 						break;
 					}
 				});
@@ -48,22 +52,22 @@ export const useStore = create<StoreState>(
 				set({
 					rows,
 					keyboardLetterState,
-					gameState: didWin ? 'wid' : rows.length === 6 ? 'lost' : 'playing',
+					gameState: didWin ? 'won' : rows.length === 6 ? 'lost' : 'playing',
 				});
 			};
 
 			return {
 				answer: getRandomWord(),
-				rows: [],
+				rows: [['g']],
 				gameState: 'playing',
-				KeyboardLetterState: {},
+				keyboardLetterState: {},
 				addGuess,
-				newGame(initialRows = []){
+				newGame(initialRows = []) {
 					set({
 						gameState: 'playing',
 						answer: getRandomWord(),
 						rows: [],
-						KeyboardLetterState: {},
+						keyboardLetterState: {},
 					});
 
 					initialRows.forEach(addGuess);
@@ -73,6 +77,10 @@ export const useStore = create<StoreState>(
 		{
 			name: 'wordle',
 			getStorage: () => localStorage,
-		}
-	)
+		},
+	),
 );
+
+// useStore.persist.clearStorage();
+
+export const answerSelector = (state: StoreState) => state.answer;
