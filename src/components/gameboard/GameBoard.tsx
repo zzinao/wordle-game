@@ -1,24 +1,26 @@
-import React from 'react';
-import { useStore } from '../../store/store';
-import BoardRow from './BoardRow';
+import React from "react";
+import { useStore } from "../../store/store";
+import BoardRow from "./BoardRow";
 
-export const GameBoard = () => {
-	const state = useStore();
-	let rows = state.rows.slice();
-	rows = rows.concat(Array(6 - rows.length).fill(''));
+interface IProps {
+  guess: string;
+}
 
-	console.log(rows);
-	
-	return (
-		<div className="flex m-5 justify-center items-center grow">
-			<div className="w-328 grid gap-1 p-2">
-				{rows.map((item, i) => (
-					<BoardRow 
-						letters={item.guess}
-						result={item.result}
-						key={i} />
-				))}
-			</div>
-		</div>
-	);
+export const GameBoard = ({ guess }: IProps) => {
+  const state = useStore();
+  let rows = state.rows.slice();
+  let currentRow = 0;
+  if (rows.length < 6) {
+    currentRow = rows.push({ guess }) - 1;
+  }
+
+  rows = rows.concat(Array(6 - rows.length).fill(""));
+
+  return (
+    <div className="grid grid-rows-6 gap-2 my-4">
+      {rows.map((word, i) => (
+        <BoardRow key={i} word={word.guess} result={word.result} />
+      ))}
+    </div>
+  );
 };

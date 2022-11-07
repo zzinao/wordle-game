@@ -1,49 +1,47 @@
-import React,{useEffect, useState} from 'react';
+import React, { useState, useEffect } from "react";
 
-export default function useGuess(): [
-    string, 
-    React.Dispatch<React.SetStateAction<string>>,
-    (letter: string) => any
-    ] {
-	const [guess, setGuess] = useState('');
-	// const [error, setError] = useState('');
-	console.log(guess);
-	const addGuessLetter = (letter: string) => {
-		setGuess((curLetter) => {
-			const newGuess = 
-            letter.length === 1 && curLetter.length !== 5 ? curLetter + letter : curLetter;
+export function useGuess(): [
+  string,
+  React.Dispatch<React.SetStateAction<string>>,
+  (letter: string) => void
+] {
+  const [guess, setGuess] = useState("");
+  console.log(guess);
+  const addGuessLetter = (letter: string) => {
+    setGuess((curGuess) => {
+      const newGuess =
+        letter.length === 1 && curGuess.length !== 5
+          ? curGuess + letter
+          : curGuess;
 
-			switch (letter) {
-			case 'CLEAR':
-				return newGuess.slice(0, -1);
-			case 'ENTER':
-				if(newGuess.length === 5){
-					return '';
-				}
-			}
-			if (newGuess.length === 5) {
-				return newGuess;
-			}
-			return newGuess;
-		});
-	};
+      switch (letter) {
+        case "Backspace":
+          return newGuess.slice(0, -1);
+        case "Enter":
+          if (newGuess.length === 5) {
+            return "";
+          }
+      }
 
-	const onKeyDown = (e: KeyboardEvent) => {
-		if (e.code === 'Enter') {
-			addGuessLetter('ENTER');
-		} else if (e.code === 'Backspace') {
-			addGuessLetter('CLEAR');
-		} else if ('abcdefghijklmnopqrstuvwxyz'.includes(e.key.toLowerCase())) {
-			addGuessLetter(e.key.toUpperCase());
-		}
-	};
+      if (newGuess.length === 5) {
+        return newGuess;
+      }
 
-	useEffect(() => {
-		document.addEventListener('keydown', onKeyDown);
-		return () => {
-			document.removeEventListener('keydown', onKeyDown);
-		};
-	}, []);
+      return newGuess;
+    });
+  };
 
-	return [guess, setGuess, addGuessLetter];
+  const onKeyDown = (e: KeyboardEvent) => {
+    let letter = e.key;
+    addGuessLetter(letter);
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, []);
+
+  return [guess, setGuess, addGuessLetter];
 }
