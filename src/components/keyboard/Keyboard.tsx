@@ -1,45 +1,64 @@
-import React, { useEffect } from 'react';
-import KeyboardBlock from './KeyboardBlock';
-import useGuess from '../../hooks/useGuess';
-import { keyArr, keyArr2, keyArr3 } from '../../utils/keys';
+import { useStore } from "../../store/store";
+import { LetterState } from "../../types/type";
 
-// interface IProps {
-//   onClick: (onClickProps: string) => void;
-// }
+interface KeyboardProps {
+  onClick: (key: string) => void;
+}
+export function Keyboard({ onClick: onClickProps }: KeyboardProps) {
+  const keyboardLetterState = useStore((s) => s.keyboardLetterState);
+  console.log(keyboardLetterState);
 
-export const Keyboard = () => {
-	// const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-	// 	const { textContent, innerHTML } = e.currentTarget;
+  const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const { textContent, innerHTML } = e.currentTarget;
 
-	// 	let returnProps = textContent!;
-	// 	if (textContent !== innerHTML) {
-	// 		returnProps = 'Backspace';
-	// 	}
+    let returnProps = textContent!;
+    if (textContent !== innerHTML) {
+      returnProps = "Backspace";
+    }
 
-	// 	onClickProps(returnProps);
-	// };
+    onClickProps(returnProps);
+  };
+  return (
+    <div className={`flex flex-col`}>
+      {keyboardKeys.map((keyboardRow, rowIndex) => (
+        <div key={rowIndex} className="my-2 flex justify-center space-x-1">
+          {keyboardRow.map((key, index) => {
+            let styles = "rounded font-bold uppercase flex-1 py-2";
 
-	const [guess, setGuess, addGuessLetter] = useGuess();
+            const letterState = keyStateStyles[keyboardLetterState[key]];
 
-	return (
-		<div className="flex flex-col items-center w-full">
-			<div className="key_rows">
-				{keyArr.map((key) => (
-					<KeyboardBlock value={key} key={key} onClick={() => addGuessLetter(key)} />
-				))} 
-			</div>
-			<div className="key_rows">
-				{keyArr2.map((key) => (
-					<KeyboardBlock value={key} key={key} onClick={() => addGuessLetter(key)} />
-				))}
-			</div>
-			<div className="key_rows">
-				<KeyboardBlock value="ENTER" onClick={() => addGuessLetter('ENTER')} />
-				{keyArr3.map((key) => (
-					<KeyboardBlock value={key} key={key} onClick={() => addGuessLetter(key)} />
-				))}
-				<KeyboardBlock value="CLEAR" onClick={() => addGuessLetter('CLEAR')} />
-			</div>
-		</div>
-	);
+            if (letterState) {
+              styles += " text-white px-1 " + letterState;
+            } else if (key !== "") {
+              styles += " bg-gray-200";
+            }
+
+            if (key === "") {
+              styles += " pointer-events-none";
+            } else {
+              styles += " px-1";
+            }
+
+            return (
+              <button onClick={onClick} key={key + index} className={styles}>
+                {key}
+              </button>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const keyStateStyles = {
+  [LetterState.Miss]: "bg-myGray",
+  [LetterState.Exist]: "bg-myYellow",
+  [LetterState.Correct]: "bg-myGreen",
 };
+
+const keyboardKeys = [
+  ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
+  ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
+  ["Enter", "z", "x", "c", "v", "b", "n", "m", "Backspace"],
+];
