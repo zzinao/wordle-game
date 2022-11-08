@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from "react";
+import { WORD_LENGTH } from "../util/gameUtil";
 
 export function useGuess(): [
   string,
   React.Dispatch<React.SetStateAction<string>>,
-  (letter: string) => void
+  string,
+  React.Dispatch<React.SetStateAction<string>>,
+  (letter: string) => void,
+  boolean,
+  React.Dispatch<React.SetStateAction<boolean>>
 ] {
   const [guess, setGuess] = useState("");
-  console.log(guess);
+  const [error, setError] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
   const addGuessLetter = (letter: string) => {
     setGuess((curGuess) => {
       const newGuess =
-        letter.length === 1 && curGuess.length !== 5
+        letter.length === 1 && curGuess.length !== WORD_LENGTH
           ? curGuess + letter
           : curGuess;
 
@@ -18,12 +25,15 @@ export function useGuess(): [
         case "Backspace":
           return newGuess.slice(0, -1);
         case "Enter":
-          if (newGuess.length === 5) {
+          if (newGuess.length === WORD_LENGTH) {
             return "";
+          } else {
+            setError("5글자를 채워주세요!");
+            setIsOpen(true);
           }
       }
 
-      if (newGuess.length === 5) {
+      if (newGuess.length === WORD_LENGTH) {
         return newGuess;
       }
 
@@ -32,8 +42,7 @@ export function useGuess(): [
   };
 
   const onKeyDown = (e: KeyboardEvent) => {
-    let letter = e.key;
-    addGuessLetter(letter);
+    addGuessLetter(e.key);
   };
 
   useEffect(() => {
@@ -43,5 +52,5 @@ export function useGuess(): [
     };
   }, []);
 
-  return [guess, setGuess, addGuessLetter];
+  return [guess, setGuess, error, setError, addGuessLetter, isOpen, setIsOpen];
 }

@@ -1,6 +1,9 @@
 import { LetterState } from "../types/type";
 import wordList from "./word_list.json";
 
+export const WORD_LENGTH = 5;
+export const TOTAL_CHANGE = 6;
+
 export function computeGuess(
   guess: string,
   answerString: string
