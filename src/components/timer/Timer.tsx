@@ -1,13 +1,13 @@
 /* eslint-disable no-constant-condition */
 import React, { useEffect, useState } from "react";
+import NewGameBtn from "../../elements/newGameBtn";
+import { useStore } from "../../store/store";
 // import { useReset } from "../../store/store";
 
 export const Timer = () => {
-  const [minutes, setMinutes] = useState(10);
+  const [minutes, setMinutes] = useState(1);
   const [seconds, setSeconds] = useState(0);
-  //   const timeover = useReset((state) => state.setTimeover);
-
-  //   if (minutes == 0 && seconds == 0) timeover();
+  const state = useStore();
 
   useEffect(() => {
     const countdown = setInterval(() => {
