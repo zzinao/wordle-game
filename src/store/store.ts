@@ -17,16 +17,6 @@ interface StoreState {
   newGame(initialGuess?: string[]): void;
 }
 
-interface ResetState {
-  timeover: boolean;
-  setTimeover: () => void;
-}
-
-export const useReset = create<ResetState>((set) => ({
-  timeover: false,
-  setTimeover: () => set((state) => ({ timeover: !state.timeover })),
-}));
-
 export const useStore = create<StoreState>(
   persist(
     (set, get) => {
