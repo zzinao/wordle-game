@@ -6,7 +6,6 @@ interface KeyboardProps {
 }
 export function Keyboard({ onClick: onClickProps }: KeyboardProps) {
   const keyboardLetterState = useStore((s) => s.keyboardLetterState);
-  console.log(keyboardLetterState);
 
   const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { textContent, innerHTML } = e.currentTarget;
@@ -23,7 +22,8 @@ export function Keyboard({ onClick: onClickProps }: KeyboardProps) {
       {keyboardKeys.map((keyboardRow, rowIndex) => (
         <div key={rowIndex} className="my-2 flex justify-center space-x-1">
           {keyboardRow.map((key, index) => {
-            let styles = "rounded font-bold uppercase flex-1 py-2";
+            let styles =
+              "rounded font-bold uppercase flex-1 py-2 hover:bg-gray-300";
 
             const letterState = keyStateStyles[keyboardLetterState[key]];
 
