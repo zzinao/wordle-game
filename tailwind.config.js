@@ -17,6 +17,9 @@ module.exports = {
         myYellow: "#c9b458",
         myGray: "#787c7e",
       },
+      boxShadow: {
+        mac: "box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px",
+      },
     },
   },
   plugins: [],
