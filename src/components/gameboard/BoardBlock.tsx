@@ -13,6 +13,7 @@ const BoardBlock = ({ value, state }: CharacterBoxProps) => {
       : `${gameStateStyle[state]} text-white`;
   return (
     <div
+      data-cy="block"
       className={`border-2 p-2 uppercase text-center font-extrabold text-4xl before:inline-block before:content-['_'] ${stateStyle}`}
     >
       {value}

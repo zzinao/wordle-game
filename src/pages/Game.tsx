@@ -8,8 +8,8 @@ import { isValidWord } from "../util/gameUtil";
 import GameBoard from "../components/gameboard";
 import Modal from "../elements/Modal";
 import GameEndModal from "../components/modal/GameEndModal";
-import NewGameBtn from "../elements/newGameBtn";
 import { WORD_LENGTH } from "../util/gameUtil";
+import useValid from "../hooks/useValid";
 
 const Game = () => {
   const state = useStore();
@@ -18,6 +18,9 @@ const Game = () => {
   const addGuess = useStore((s) => s.addGuess);
   const previousGuess = usePrevious(guess);
   const isGameOver = state.gameState !== "playing";
+
+  // const isValidWord = useValid(previousGuess);
+  // console.log(isValidWord);
 
   useEffect(() => {
     if (guess.length === 0 && previousGuess?.length === WORD_LENGTH) {
