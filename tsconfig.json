@@ -14,7 +14,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "types": ["node", "cypress", "cypress-react-selector"]
   },
-  "include": ["./src"]
+  "include": ["./src", "cypress/intergration"]
 }

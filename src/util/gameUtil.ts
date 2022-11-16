@@ -1,8 +1,10 @@
 import { LetterState } from "../types/type";
+import { getApi } from "./api";
 import wordList from "./word_list.json";
 
 export const WORD_LENGTH = 5;
 export const TOTAL_CHANGE = 6;
+export const BASE_URL = "/word";
 
 export function computeGuess(
   guess: string,
@@ -66,9 +68,11 @@ export function computeGuess(
 }
 
 export function getRandomWord(): string {
+  // const wordList = await getApi();
   return wordList.valid[Math.floor(Math.random() * wordList.valid.length)];
 }
 
 export function isValidWord(word: string): boolean {
+  // const wordList = await getApi();
   return wordList.valid.concat(wordList.invalid).includes(word);
 }
