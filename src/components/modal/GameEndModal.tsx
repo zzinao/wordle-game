@@ -1,5 +1,5 @@
 import React from "react";
-import NewGameBtn from "../../elements/newGameBtn";
+import NewGameBtn from "../../elements/NewGameBtn";
 import { useGuess } from "../../hooks/useGuess";
 import { useStore } from "../../store/store";
 import BoardRow from "../gameboard/BoardRow";
