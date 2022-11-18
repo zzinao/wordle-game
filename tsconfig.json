@@ -15,7 +15,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["node", "cypress", "cypress-react-selector"]
+    "types": ["node"]
   },
-  "include": ["./src", "cypress/intergration"]
+  "include": ["./src"]
 }
