@@ -1,6 +1,6 @@
 /* eslint-disable no-constant-condition */
 import React, { useEffect, useState } from "react";
-import NewGameBtn from "../../elements/newGameBtn";
+// import NewGameBtn from "../../elements/NewGameBtn";
 import { useStore } from "../../store/store";
 // import { useReset } from "../../store/store";
 

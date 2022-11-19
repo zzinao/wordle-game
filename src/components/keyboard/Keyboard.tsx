@@ -40,7 +40,12 @@ export function Keyboard({ onClick: onClickProps }: KeyboardProps) {
             }
 
             return (
-              <button onClick={onClick} key={key + index} className={styles}>
+              <button
+                data-cy="keyblock"
+                onClick={onClick}
+                key={key + index}
+                className={styles}
+              >
                 {key}
               </button>
             );
