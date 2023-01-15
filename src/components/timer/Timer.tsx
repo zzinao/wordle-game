@@ -5,7 +5,7 @@ import { useStore } from "../../store/store";
 // import { useReset } from "../../store/store";
 
 export const Timer = () => {
-  const [minutes, setMinutes] = useState(1);
+  const [minutes, setMinutes] = useState(10);
   const [seconds, setSeconds] = useState(0);
   const state = useStore();
 
